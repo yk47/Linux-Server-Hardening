@@ -1,0 +1,11 @@
+ Static hostname: ubuntu2004
+       Icon name: computer-vm
+         Chassis: vm
+      Machine ID: a58b60f4b01c46bbb25e950a81e5e1aa
+         Boot ID: a69f2f2b34c145a1a161cc614d5670e6
+  Virtualization: vmware
+Operating System: Ubuntu 22.04.5 LTS
+          Kernel: Linux 6.8.0-79-generic
+    Architecture: x86-64
+ Hardware Vendor: VMware, Inc.
+  Hardware Model: VMware Virtual Platform

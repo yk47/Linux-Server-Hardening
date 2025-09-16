@@ -1,0 +1,45 @@
+Feb  6 02:05:09 ubuntu2004 dbus-daemon[596]: [system] Failed to activate service 'org.bluez': timed out (service_start_timeout=25000ms)
+Feb  6 02:39:08 ubuntu2004 dbus-daemon[604]: [system] Failed to activate service 'org.bluez': timed out (service_start_timeout=25000ms)
+Feb  6 02:39:53 ubuntu2004 dbus-daemon[604]: [system] Failed to activate service 'org.bluez': timed out (service_start_timeout=25000ms)
+Feb  6 02:46:40 ubuntu2004 sshd[4843]: pam_systemd(sshd:session): Failed to release session: Interrupted system call
+Feb  6 02:47:23 ubuntu2004 dbus-daemon[598]: [system] Failed to activate service 'org.bluez': timed out (service_start_timeout=25000ms)
+Feb  6 02:48:16 ubuntu2004 dbus-daemon[598]: [system] Failed to activate service 'org.bluez': timed out (service_start_timeout=25000ms)
+Feb  6 02:49:40 ubuntu2004 useradd[11202]: failed adding user 'vboxadd', data deleted
+Feb  6 02:49:45 ubuntu2004 useradd[11402]: failed adding user 'vboxadd', data deleted
+Feb  6 02:49:45 ubuntu2004 useradd[11403]: failed adding user 'vboxadd', data deleted
+Feb  6 02:50:36 ubuntu2004 useradd[834]: failed adding user 'vboxadd', data deleted
+Feb  6 02:50:36 ubuntu2004 useradd[835]: failed adding user 'vboxadd', data deleted
+Feb  6 02:51:02 ubuntu2004 dbus-daemon[605]: [system] Failed to activate service 'org.bluez': timed out (service_start_timeout=25000ms)
+Feb  6 02:52:15 ubuntu2004 useradd[838]: failed adding user 'vboxadd', data deleted
+Feb  6 02:52:15 ubuntu2004 useradd[839]: failed adding user 'vboxadd', data deleted
+Feb  6 02:52:40 ubuntu2004 dbus-daemon[613]: [system] Failed to activate service 'org.bluez': timed out (service_start_timeout=25000ms)
+Feb  6 02:54:14 ubuntu2004 dbus-daemon[613]: [system] Failed to activate service 'org.bluez': timed out (service_start_timeout=25000ms)
+Feb  6 08:47:59 ubuntu2004 useradd[965]: failed adding user 'vboxadd', data deleted
+Feb  6 08:47:59 ubuntu2004 useradd[966]: failed adding user 'vboxadd', data deleted
+Feb  6 03:19:44 ubuntu2004 sshd[2058]: pam_systemd(sshd:session): Failed to release session: Interrupted system call
+Sep 16 09:11:48 ubuntu2004 dbus-daemon[723]: [system] Failed to activate service 'org.bluez': timed out (service_start_timeout=25000ms)
+Sep 16 03:43:00 ubuntu2004 gdm-password]: pam_systemd(gdm-password:session): Failed to create session: Message recipient disconnected from message bus without replying
+Sep 16 03:43:00 ubuntu2004 gdm-launch-environment]: pam_systemd(gdm-launch-environment:session): Failed to release session: Message recipient disconnected from message bus without replying
+Sep 16 03:43:02 ubuntu2004 systemd-logind[2117]: Failed to add user by file name 1000, ignoring: Invalid argument
+Sep 16 03:43:02 ubuntu2004 systemd-logind[2117]: Failed to add user by file name 125, ignoring: Invalid argument
+Sep 16 03:43:02 ubuntu2004 systemd-logind[2117]: User enumeration failed: Invalid argument
+Sep 16 03:43:02 ubuntu2004 systemd-logind[2117]: Session enumeration failed: No such file or directory
+Sep 16 03:43:25 ubuntu2004 dbus-daemon[723]: [system] Failed to activate service 'org.freedesktop.nm_dispatcher': timed out (service_start_timeout=25000ms)
+Sep 16 03:43:25 ubuntu2004 dbus-daemon[723]: [system] Failed to activate service 'org.freedesktop.Avahi': timed out (service_start_timeout=25000ms)
+Sep 16 03:43:25 ubuntu2004 dbus-daemon[723]: [system] Failed to activate service 'org.freedesktop.RealtimeKit1': timed out (service_start_timeout=25000ms)
+Sep 16 03:43:51 ubuntu2004 dbus-daemon[723]: [system] Failed to activate service 'org.bluez': timed out (service_start_timeout=25000ms)
+Sep 16 03:46:49 ubuntu2004 dbus-daemon[775]: [system] Failed to activate service 'org.bluez': timed out (service_start_timeout=25000ms)
+Sep 16 04:13:46 ubuntu2004 dbus-daemon[1519]: [session uid=1000 pid=1519] Failed to activate service 'org.freedesktop.Tracker1.Miner.Extract': timed out (service_start_timeout=120000ms)
+Sep 16 06:15:10 ubuntu2004 dbus-daemon[801]: [system] Failed to activate service 'org.bluez': timed out (service_start_timeout=25000ms)
+Sep 16 06:31:51 ubuntu2004 dbus-daemon[796]: [system] Failed to activate service 'org.bluez': timed out (service_start_timeout=25000ms)
+Sep 16 06:38:50 ubuntu2004 dbus-daemon[803]: [system] Failed to activate service 'org.bluez': timed out (service_start_timeout=25000ms)
+Sep 16 06:44:46 ubuntu2004 dbus-daemon[735]: [system] Failed to activate service 'org.bluez': timed out (service_start_timeout=25000ms)
+Sep 16 07:18:33 ubuntu2004 dbus-daemon[735]: [system] Failed to activate service 'org.bluez': timed out (service_start_timeout=25000ms)
+Sep 16 07:22:04 ubuntu2004 dbus-daemon[735]: [system] Failed to activate service 'org.bluez': timed out (service_start_timeout=25000ms)
+Sep 16 07:25:58 ubuntu2004 dbus-daemon[735]: [system] Failed to activate service 'org.bluez': timed out (service_start_timeout=25000ms)
+Sep 16 07:42:03 ubuntu2004 dbus-daemon[735]: [system] Failed to activate service 'org.bluez': timed out (service_start_timeout=25000ms)
+Sep 16 08:23:47 ubuntu2004 dbus-daemon[804]: [system] Failed to activate service 'org.bluez': timed out (service_start_timeout=25000ms)
+Sep 16 08:24:15 ubuntu2004 dbus-daemon[804]: [system] Failed to activate service 'org.bluez': timed out (service_start_timeout=25000ms)
+Sep 16 08:34:05 ubuntu2004 dbus-daemon[728]: [system] Failed to activate service 'org.bluez': timed out (service_start_timeout=25000ms)
+Sep 16 08:36:25 ubuntu2004 dbus-daemon[728]: [system] Failed to activate service 'org.bluez': timed out (service_start_timeout=25000ms)
+Sep 16 09:11:20 ubuntu2004 sudo:     root : TTY=pts/1 ; PWD=/home/ubuntu/Desktop/BroskiesHub_Internship/Linux Server Hardening/3-Quick-scas-while-capture-is-running ; USER=root ; COMMAND=/usr/bin/grep -i failed\\|invalid /var/log/auth.log
