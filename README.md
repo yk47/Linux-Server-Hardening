@@ -75,3 +75,26 @@ cat ~/.ssh/authorized_keys > before-authorized_keys || true
 ```
 
 <img width="1850" height="1053" alt="before_authorized_keys" src="https://github.com/user-attachments/assets/8747a324-8143-44d7-a288-f6b795cfb480" />
+
+## 2.Start live traffic capture (tcpdump) — save to pcap for later analysis
+
+Choose the interface: find it with ```ip -c a``` (e.g. ```eth0``` or ```ens33```).
+
+Minimal live capture (all traffic) — **WARNING:** large files:
+```bash
+sudo tcpdump -i ens33 -s 0 -w capture_full.pcap
+# Ctrl+C to stop
+```
+<img width="1850" height="1053" alt="capture_pcap" src="https://github.com/user-attachments/assets/16cd62f2-a6aa-4cd9-833a-ad022080945c" />
+
+Better: targeted capture (common cleartext auth protocols & suspicious ports):
+
+```bash
+sudo tcpdump -i ens33 -s 0 -w capture_auth.pcap \
+  'tcp port 21 or tcp port 23 or tcp port 25 or tcp port 110 or tcp port 143 or tcp port 80 or tcp port 110 or tcp port 143 or tcp port 389 or tcp port 3306 or port 3389'
+```
+<img width="1850" height="1053" alt="cap_auth" src="https://github.com/user-attachments/assets/afb46d6d-ec0d-497a-8ef6-d5da78a445cb" />
+
+- ```-W 10 -C 100``` keeps up to 10 files of 100MB each.
+
+
