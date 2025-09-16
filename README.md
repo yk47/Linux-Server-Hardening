@@ -145,5 +145,42 @@ tshark -r /tmp/capture_auth.pcap -Y 'http.request.method == "POST"' -T fields -e
 <img width="1850" height="1053" alt="creds" src="https://github.com/user-attachments/assets/0683afd5-dde5-484f-8d2d-0e66a3dbc538" />
 
 
+## 5.SSH hardening: disable root login, enforce key-only auth, and rate-limit
+
+1. Generate key (on your admin workstation):
+```bash
+# on your local admin machine
+ssh-keygen -t ed25519 -C "yash@yourhost"
+ssh-copy-id -i ~/.ssh/id_ed25519.pub youruser@target-host
+# OR manually append the public key to ~/.ssh/authorized_keys on the server
+```
+<img width="1850" height="1053" alt="ssh_key_gen" src="https://github.com/user-attachments/assets/b7a5cf1b-83ea-4fe8-ba7a-d23904fa6cc8" />
+
+2. **Edit** ```/etc/ssh/sshd_config``` (backup first) and apply recommended changes:
+
+ ```bash
+sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
+sudo sed -i 's/^PermitRootLogin.*/PermitRootLogin no/' /etc/ssh/sshd_config || echo 'PermitRootLogin no' | sudo tee -a /etc/ssh/sshd_config
+sudo sed -i 's/^PasswordAuthentication.*/PasswordAuthentication no/' /etc/ssh/sshd_config || echo 'PasswordAuthentication no' | sudo tee -a /etc/ssh/sshd_config
+# Optional: allow only specific user(s)
+sudo sed -i '/^AllowUsers/ d' /etc/ssh/sshd_config
+echo 'AllowUsers youruser' | sudo tee -a /etc/ssh/sshd_config
+# restart ssh
+sudo systemctl restart sshd
+# verify
+sudo ss -tnlp | grep sshd
+```
+<img width="1850" height="1053" alt="edit" src="https://github.com/user-attachments/assets/982076c4-980f-4e6d-93b3-2f475a303679" />
+
+If you need password login temporarily, **do not** disable password auth until you've successfully added a key and tested new login in another session.
+
+   
+3. Add a UFW rule to rate-limit SSH and allow only key-based connections
+```bash
+sudo ufw allow OpenSSH     # ensures port 22 allowed
+sudo ufw limit OpenSSH     # enables rate limiting (6 connections / 30s default)
+sudo ufw status verbose
+```
+<img width="1850" height="1053" alt="Add_UFW_rule" src="https://github.com/user-attachments/assets/5d52b3d5-3572-4c39-b7c0-4802b6226e6f" />
 
 
