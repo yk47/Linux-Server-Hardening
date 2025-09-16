@@ -98,3 +98,30 @@ sudo tcpdump -i ens33 -s 0 -w capture_auth.pcap \
 - ```-W 10 -C 100``` keeps up to 10 files of 100MB each.
 
 
+## 3.Quick scans while capture is running — look for suspicious behavior
+
+1.High connection counts (possible scanning / brute force):
+```bash
+sudo ss -tanp | awk '{print $5}' | cut -d: -f1 | sort | uniq -c | sort -nr | head -n 30 > connection_counts.txt
+```
+<img width="1850" height="1053" alt="high_connection_counts" src="https://github.com/user-attachments/assets/deb375e5-200b-458e-a0cb-27910e1a42eb" />
+
+2.Check auth logs for failed logins (SSH, others):
+```bash
+sudo journalctl -u ssh -n 200 --no-pager > ssh_journal_recent.txt
+sudo grep -i 'failed\|invalid' /var/log/auth.log | tail -n 200 > auth_failed_tail.txt
+```
+<img width="1850" height="1053" alt="ssh_journal_txt" src="https://github.com/user-attachments/assets/eda0f0d1-7414-475f-9a18-dfe248f49aa1" />
+<img width="1850" height="1053" alt="auth_failed_tail" src="https://github.com/user-attachments/assets/8a19ca91-d6e0-4b55-9ce5-05053352719f" />
+
+
+3.Live netstat-style counts by IP:
+```bash
+sudo ss -tn state established '( sport = :22 or sport = :80 or sport = :443 )' | awk '{print $5}' | cut -d: -f1 | sort | uniq -c | sort -nr > established_by_ip.txt
+```
+<img width="1850" height="1053" alt="established_by_ip" src="https://github.com/user-attachments/assets/bcbb18ff-6099-4bc9-8868-550b0551c1b9" />
+
+
+
+
+
