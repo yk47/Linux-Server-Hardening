@@ -183,4 +183,133 @@ sudo ufw status verbose
 ```
 <img width="1850" height="1053" alt="Add_UFW_rule" src="https://github.com/user-attachments/assets/5d52b3d5-3572-4c39-b7c0-4802b6226e6f" />
 
+## 6.fail2ban configuration to block repeated SSH attempts
+
+Create or edit a jail local file:
+```bash
+sudo tee /etc/fail2ban/jail.d/ssh-custom.conf > /dev/null <<'EOF'
+[sshd]
+enabled = true
+port = ssh
+filter = sshd
+logpath = /var/log/auth.log
+maxretry = 5
+bantime = 3600
+findtime = 600
+EOF
+
+# reload fail2ban
+sudo systemctl restart fail2ban
+sudo fail2ban-client status sshd
+```
+<img width="1850" height="1053" alt="fail2ban_start" src="https://github.com/user-attachments/assets/853c1a73-3e39-47c2-964a-0f552f09efe8" />
+<img width="1850" height="1053" alt="create_jail_local" src="https://github.com/user-attachments/assets/8cf3464b-040f-4213-a50b-d4500cc8338e" />
+
+Check banned IPs:
+```bash
+sudo fail2ban-client status sshd
+# or:
+sudo iptables -L -n -v | grep f2b-sshd -A 5
+```
+<img width="1850" height="1053" alt="check_banned_ip" src="https://github.com/user-attachments/assets/d7d0fb42-2723-4787-a933-492e8db3b906" />
+
+
+## 7.UFW baseline rules (block unused ports; only open what you need)
+
+Example minimal policy:
+```bash
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+
+# allow SSH (already shown), HTTP/HTTPS if webserver:
+sudo ufw allow 22/tcp         # or use 'OpenSSH'
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+
+# drop everything else
+sudo ufw enable
+sudo ufw status verbose
+```
+<img width="1850" height="1053" alt="Edit_minimal_policy" src="https://github.com/user-attachments/assets/2d2dedea-0e8e-4cae-97b9-eaf632a625ef" />
+
+```bash
+sudo ufw deny 3306/tcp   # deny MySQL from outside
+```
+<img width="1850" height="1053" alt="block_port" src="https://github.com/user-attachments/assets/c46c2e33-85a5-4f28-9a66-70760fd8873c" />
+
+## 8.After changes — collect after state (what to include in deliverables)
+
+Run the same commands as “before” to capture the new state and save them (suffix _after):
+```bash
+hostnamectl > after-system-info.txt
+ip -c a > after-ip.txt
+sudo ss -tulpen > after-listening.txt
+sudo ufw status verbose | tee after-ufw.txt
+sudo iptables -L -n -v > after-iptables.txt || true
+sudo nft list ruleset > after-nft.txt || true
+sudo cp /etc/ssh/sshd_config after-sshd_config
+sudo fail2ban-client status > after-fail2ban-status.txt || true
+cat ~/.ssh/authorized_keys > after-authorized_keys || true
+```
+<img width="1850" height="1053" alt="before" src="https://github.com/user-attachments/assets/f92e528a-16f1-4b10-8f2e-e4a43fe38593" />
+
+- ```sudo ufw status verbose``` (after)
+- ```sudo fail2ban-client status sshd``` (after)
+- successful ```ssh -i ~/.ssh/id_ed25519 youruser@target-host``` login (show terminal session establishing)
+
+
+## 9.Deliverables checklist & example report snippets
+
+**Deliverable A — Before/After state summary (example format)**
+```bash
+System: target-host.example.com
+Test Date: 2025-09-16
+
+BEFORE:
+- Listening services (excerpt): 
+  tcp   LISTEN 0      128    0.0.0.0:22      0.0.0.0:*    users:(("sshd",pid=1234))
+  tcp   LISTEN 0      128    0.0.0.0:80      0.0.0.0:*    users:(("nginx",pid=2345))
+- UFW: Status: active, default deny incoming, allowed: OpenSSH, 80/tcp, 443/tcp
+- fail2ban: disabled / no active jails
+- SSH: PermitRootLogin yes, PasswordAuthentication yes (from /etc/ssh/sshd_config)
+
+AFTER:
+- Listening services (excerpt): same as before (no unnecessary new services)
+- UFW: Status: active, default deny incoming; allowed: 22 (rate-limited), 80, 443
+- fail2ban: active, jail: sshd (maxretry 5, bantime 3600)
+- SSH: PermitRootLogin no, PasswordAuthentication no, AllowUsers youruser
+- Notes: SSH access confirmed working with public key authentication from admin workstation.
+```
+**Deliverable B — Applied commands list (example format)**
+
+Provide a plain text file applied_commands.txt containing chronological commands you executed. Example:
+sudo apt update && sudo apt install -y tcpdump tshark wireshark ufw fail2ban scrot
+sudo tcpdump -i eth0 -s 0 -w /tmp/capture_auth.pcap 'tcp port 21 or tcp port 80 or tcp port 110'
+sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
+sudo sed -i 's/^PermitRootLogin.*/PermitRootLogin no/' /etc/ssh/sshd_config
+sudo sed -i 's/^PasswordAuthentication.*/PasswordAuthentication no/' /etc/ssh/sshd_config
+echo 'AllowUsers youruser' | sudo tee -a /etc/ssh/sshd_config
+sudo systemctl restart sshd
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw limit OpenSSH
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+sudo ufw enable
+sudo tee /etc/fail2ban/jail.d/ssh-custom.conf <<'EOF'
+[sshd]
+enabled = true
+port = ssh
+logpath = /var/log/auth.log
+maxretry = 5
+bantime = 3600
+findtime = 600
+EOF
+sudo systemctl restart fail2ban
+sudo fail2ban-client status sshd
+```
+
+```bash
+
+
 
