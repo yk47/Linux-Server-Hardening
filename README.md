@@ -77,7 +77,8 @@ cat ~/.ssh/authorized_keys > before-authorized_keys || true
 <img width="1850" height="1053" alt="before_authorized_keys" src="https://github.com/user-attachments/assets/8747a324-8143-44d7-a288-f6b795cfb480" />
 
 ## 2.Start live traffic capture (tcpdump) — save to pcap for later analysis
-
+- Try to loging when capturing traffic
+  <img width="1920" height="1080" alt="login" src="https://github.com/user-attachments/assets/f4bf3d72-5613-44be-b44d-71c0a54a86c7" />
 Choose the interface: find it with ```ip -c a``` (e.g. ```eth0``` or ```ens33```).
 
 Minimal live capture (all traffic) — **WARNING:** large files:
@@ -100,6 +101,8 @@ sudo tcpdump -i ens33 -s 0 -w capture_auth.pcap \
 
 ## 3.Quick scans while capture is running — look for suspicious behavior
 
+
+
 1.High connection counts (possible scanning / brute force):
 ```bash
 sudo ss -tanp | awk '{print $5}' | cut -d: -f1 | sort | uniq -c | sort -nr | head -n 30 > connection_counts.txt
@@ -121,6 +124,25 @@ sudo ss -tn state established '( sport = :22 or sport = :80 or sport = :443 )' |
 ```
 <img width="1850" height="1053" alt="established_by_ip" src="https://github.com/user-attachments/assets/bcbb18ff-6099-4bc9-8868-550b0551c1b9" />
 
+
+## 4.Offline analysis of pcap to find credentials (tshark / Wireshark)
+
+**Important:** If the traffic is encrypted (HTTPS, SSH, TLS), you will not be able to recover credentials.
+
+Useful tshark commands:
+
+- Extract HTTP ```Authorization``` headers (Basic auth):
+```bash
+tshark -r /tmp/capture_auth.pcap -Y 'http.authorization' -T fields -e ip.src -e http.host -e http.request.uri -e http.authorization | tee http_auth_headers.txt
+```
+<img width="1850" height="1053" alt="extract_http" src="https://github.com/user-attachments/assets/1aa1766e-df82-4081-83a6-cb5ee3fb6f71" />
+
+- Extract HTTP form fields and posted data (may contain creds in plain POST bodies):
+```bash
+# Show HTTP POST URIs and content
+tshark -r /tmp/capture_auth.pcap -Y 'http.request.method == "POST"' -T fields -e ip.src -e http.host -e http.request.uri -e http.file_data | tee http_posts.txt
+```
+<img width="1850" height="1053" alt="creds" src="https://github.com/user-attachments/assets/0683afd5-dde5-484f-8d2d-0e66a3dbc538" />
 
 
 
