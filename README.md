@@ -282,7 +282,9 @@ AFTER:
 ```
 **Deliverable B — Applied commands list (example format)**
 
-Provide a plain text file applied_commands.txt containing chronological commands you executed. Example:
+Provide a plain text file applied_commands.txt containing chronological commands you executed. 
+Example:
+```bash
 sudo apt update && sudo apt install -y tcpdump tshark wireshark ufw fail2ban scrot
 sudo tcpdump -i eth0 -s 0 -w /tmp/capture_auth.pcap 'tcp port 21 or tcp port 80 or tcp port 110'
 sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
@@ -308,8 +310,17 @@ EOF
 sudo systemctl restart fail2ban
 sudo fail2ban-client status sshd
 ```
+<img width="1850" height="1053" alt="DB1" src="https://github.com/user-attachments/assets/0c38237d-f893-496f-b58c-95f55061f6e0" />
 
+<img width="1850" height="1053" alt="DB2" src="https://github.com/user-attachments/assets/35276efd-5696-4f44-8086-1d2471232cb0" />
+
+## 10.Cleanup & safe storage
+
+After capture:
 ```bash
-
-
+# Secure the captures
+sudo chown $USER:$USER /tmp/capture_auth.pcap
+gzip /tmp/capture_auth.pcap && mv /tmp/capture_auth.pcap.gz ~/report/captures/
+# Remove any private keys you may have temporarily created on target
+```
 
